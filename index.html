@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Cocktails</title>
+    <style>
+        .title {
+            text-align: center;
+        }
+        #content{
+            font-family: Arial;
+        }
+        .name{
+            list-style: none;
+            display: flex;
+            margin: 0;
+        }
+        .ingredient{
+            font-size: 0.75rem;
+            padding: 2px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Cocktail Recipes</h1>
+    <div id="content"></div>
+    <script>
+        const pageContent = document.querySelector('#content');
+        fetch("cocktails.json")
+            .then(response => response.json())
+            .then(data => {
+                let cocktails = data.cocktails.sort((a,b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                });
+                showCocktails(cocktails);
+            })
+
+        function showCocktails (cocktails) {
+            for (let cocktail of cocktails) {
+                const mainContainer = document.createElement('div');
+                const cocktailName = document.createElement('ul');
+                mainContainer.classList.add("container");
+                cocktailName.classList.add("name");
+                mainContainer.innerText = `${cocktail.name}`;
+                pageContent.appendChild(mainContainer);
+                mainContainer.appendChild(cocktailName);
+                for (let ingredient of cocktail.ingredients){
+                    const cocktailIngredient = document.createElement('li');
+                    cocktailIngredient.classList.add("ingredient");
+                    let comma = ''
+                    if (cocktail.ingredients.indexOf(ingredient) < (cocktail.ingredients.length)-1){
+                        comma = ','
+                    }
+                    cocktailIngredient.innerText = `${ingredient}${comma}`;
+                    cocktailName.appendChild(cocktailIngredient);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
