@@ -12,6 +12,9 @@
         #content{
             font-family: Arial;
         }
+        .container{
+            font-weight: bolder;
+        }
         .name{
             list-style: none;
             display: flex;
@@ -21,6 +24,7 @@
             font-size: 0.75rem;
             padding: 2px;
             font-style: italic;
+            font-weight: 100;
         }
     </style>
 </head>
@@ -37,11 +41,13 @@
                         return -1;
                     }
                 });
-                showCocktails(cocktails);
+                showCocktailRecipes(cocktails);
+                showCocktailsToTry(cocktails);
             })
 
-        function showCocktails (cocktails) {
+        function showCocktailRecipes (cocktails) {
             for (let cocktail of cocktails) {
+                if (cocktail.have_ingredients){
                 const mainContainer = document.createElement('div');
                 const cocktailName = document.createElement('ul');
                 mainContainer.classList.add("container");
@@ -60,6 +66,43 @@
                     cocktailName.appendChild(cocktailIngredient);
                 }
             }
+            }
+        }
+
+        function showCocktailsToTry (cocktails) {
+            const tryTitle = document.createElement('h1');
+            tryTitle.classList.add("title");
+            tryTitle.innerText = "Cocktails to Try";
+            pageContent.appendChild(tryTitle);
+            for (let cocktail of cocktails) {
+                if (!cocktail.have_ingredients){
+                const mainContainer = document.createElement('div');
+                const cocktailName = document.createElement('ul');
+                mainContainer.classList.add("container");
+                cocktailName.classList.add("name");
+                mainContainer.innerText = `${cocktail.name}`;
+                pageContent.appendChild(mainContainer);
+                mainContainer.appendChild(cocktailName);
+                for (let ingredient of cocktail.ingredients){
+                    const cocktailIngredient = document.createElement('li');
+                    cocktailIngredient.classList.add("ingredient");
+                    let comma = ''
+                    if (cocktail.ingredients.indexOf(ingredient) < (cocktail.ingredients.length)-1){
+                        comma = ','
+                    }
+                    cocktailIngredient.innerText = `${ingredient}${comma}`;
+                    cocktailName.appendChild(cocktailIngredient);
+                }
+            }
+            }
+            // for (let cocktail of cocktails) {
+            //     if (!cocktail.have_ingredients){
+            //         const tryContainer = document.createElement('div');
+            //         tryContainer.classList.add("container");
+            //         tryContainer.innerText = `${cocktail.name} - ${cocktail.ingredients}`;
+            //         pageContent.appendChild(tryContainer);
+            //     }
+            // }
         }
     </script>
 </body>
