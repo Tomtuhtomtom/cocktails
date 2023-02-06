@@ -41,13 +41,14 @@
                         return -1;
                     }
                 });
-                showCocktailRecipes(cocktails);
-                showCocktailsToTry(cocktails);
+                showCocktailRecipes(cocktails, true);
+                showSecondaryTitle();
+                showCocktailRecipes(cocktails, false);
             })
 
-        function showCocktailRecipes (cocktails) {
+        function showCocktailRecipes (cocktails, bool) {
             for (let cocktail of cocktails) {
-                if (cocktail.have_ingredients){
+                if (cocktail.have_ingredients == bool){
                 const mainContainer = document.createElement('div');
                 const cocktailName = document.createElement('ul');
                 mainContainer.classList.add("container");
@@ -68,33 +69,11 @@
             }
             }
         }
-
-        function showCocktailsToTry (cocktails) {
+        function showSecondaryTitle () {
             const tryTitle = document.createElement('h1');
             tryTitle.classList.add("title");
             tryTitle.innerText = "Cocktails to Try";
             pageContent.appendChild(tryTitle);
-            for (let cocktail of cocktails) {
-                if (!cocktail.have_ingredients){
-                const mainContainer = document.createElement('div');
-                const cocktailName = document.createElement('ul');
-                mainContainer.classList.add("container");
-                cocktailName.classList.add("name");
-                mainContainer.innerText = `${cocktail.name}`;
-                pageContent.appendChild(mainContainer);
-                mainContainer.appendChild(cocktailName);
-                for (let ingredient of cocktail.ingredients){
-                    const cocktailIngredient = document.createElement('li');
-                    cocktailIngredient.classList.add("ingredient");
-                    let comma = ''
-                    if (cocktail.ingredients.indexOf(ingredient) < (cocktail.ingredients.length)-1){
-                        comma = ','
-                    }
-                    cocktailIngredient.innerText = `${ingredient}${comma}`;
-                    cocktailName.appendChild(cocktailIngredient);
-                }
-            }
-            }
         }
     </script>
 </body>
